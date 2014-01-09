@@ -6,8 +6,16 @@ import scala.util.Either;
 
 public interface SecurityContext {
 
-    Option<Subject> getSubject();
+    void login(String username, String password) throws LoginException;
 
-    Either<LoginException, Subject> login(String username, String password);
     void logout();
+
+    Object getSessionVariable(String key);
+
+    void setSessionVariable(String key, Object value);
+
+    String getUsername();
+
+    Integer getUserID();
+
 }

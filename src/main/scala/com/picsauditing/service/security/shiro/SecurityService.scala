@@ -2,7 +2,7 @@ package com.picsauditing.service.security.shiro
 
 import com.picsauditing.service.security.API.{Subject, SecurityContext}
 import com.picsauditing.service.security.exception.LoginException
-import org.apache.shiro.SecurityUtils
+import org.apache.shiro.{authc, SecurityUtils}
 import org.apache.shiro.mgt.{DefaultSecurityManager, SecurityManager}
 import org.apache.shiro.authc.UsernamePasswordToken
 import com.picsauditing.service.security.shiro.configuration.HOCONConfiguration
@@ -24,20 +24,18 @@ class SecurityService(service: SecurityManager) extends SecurityContext {
 
   def logout() = SecurityUtils.getSubject.logout()
 
-  def getSubject: Option[Subject] = optional(wrapped(SecurityUtils.getSubject))
+  def setSessionVariable(key: String, value: scala.Any) = SecurityUtils.getSubject.getSession.setAttribute(key, value)
 
-  def login(username: String, password: String): Either[LoginException, Subject] = {
-    try {
-      Right(
-        wrapped(
-          service.login(SecurityUtils.getSubject, new UsernamePasswordToken(username, password))
-        )
-    )} catch {
-      case e: Throwable => Left(new LoginException(e))
-    }
+  def getSessionVariable(key: String): AnyRef = SecurityUtils.getSubject.getSession.getAttribute(key)
+
+  def getUsername: String = ???
+
+  def getUserID: Integer = ???
+
+  def login(username: String, password: String) = try {
+    service.login(SecurityUtils.getSubject, new UsernamePasswordToken(username, password))
+  } catch {
+    case e: Throwable => throw new LoginException(e)
   }
-
-  private def wrapped(s: org.apache.shiro.subject.Subject) = new WrappedSubject(s)
-  private def optional[A](f: => A) = try { Some(f) } catch { case _: Throwable => None }
 }
 

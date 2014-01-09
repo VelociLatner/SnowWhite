@@ -1,4 +1,4 @@
 package com.picsauditing.service.security.exception;
 
-public class LoginException {
+public class LoginException extends Exception {
 }

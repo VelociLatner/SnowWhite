@@ -8,6 +8,6 @@ public interface SecurityContext {
 
     Option<Subject> getSubject();
 
-    Either<Subject, LoginException> login(String username, String password);
+    Either<LoginException, Subject> login(String username, String password);
     void logout();
 }

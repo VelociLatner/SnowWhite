@@ -1,4 +1,4 @@
-package com.picsauditing.service.security.shiro
+package com.picsauditing.service.security.shiro.implementation
 
 import org.apache.shiro.realm.jdbc.JdbcRealm
 import javax.sql.DataSource

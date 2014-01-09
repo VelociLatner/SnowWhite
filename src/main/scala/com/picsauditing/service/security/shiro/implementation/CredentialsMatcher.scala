@@ -1,4 +1,4 @@
-package com.picsauditing.service.security.shiro
+package com.picsauditing.service.security.shiro.implementation
 
 import org.apache.shiro.authc.credential.{CredentialsMatcher => ShiroMatcher}
 import org.apache.shiro.authc.{AuthenticationInfo, AuthenticationToken}

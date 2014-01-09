@@ -5,7 +5,6 @@ import com.picsauditing.service.security.exception.LoginException
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.mgt.{DefaultSecurityManager, SecurityManager}
 import org.apache.shiro.authc.UsernamePasswordToken
-import com.picsauditing.service.security.shiro.configuration.HOCONConfiguration
 import javax.sql.DataSource
 import com.picsauditing.service.security.hazelcast.CacheProvider
 import com.picsauditing.service.security.shiro.implementation.{Realm, CredentialsMatcher}
@@ -36,10 +35,12 @@ class SecurityService(service: SecurityManager) extends SecurityContext {
 
 }
 
-class ConfiguredSecurityService(config: HOCONConfiguration, db: DataSource) extends SecurityService({
-  val cacheManager = new CacheProvider
-  val credentialMatcher = new CredentialsMatcher
-  val realm = new Realm(cacheManager, credentialMatcher, db)
-  new DefaultSecurityManager(realm)
-})
+class ConfiguredSecurityService(db: DataSource, authenticationCacheName: String, authorizationCacheName: String) extends SecurityService(
+  {
+    val cacheManager = new CacheProvider
+    val credentialMatcher = new CredentialsMatcher
+    val realm = new Realm( cacheManager,  credentialMatcher,  db,  authorizationCacheName,  authenticationCacheName )
+    new DefaultSecurityManager(realm)
+  }
+)
 

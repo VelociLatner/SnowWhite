@@ -10,15 +10,6 @@ import javax.sql.DataSource
 import com.picsauditing.service.security.hazelcast.CacheProvider
 import com.picsauditing.service.security.shiro.implementation.{Realm, CredentialsMatcher}
 
-object SecurityService {
-  def apply(config: HOCONConfiguration, db: DataSource) = {
-    val cacheManager = new CacheProvider
-    val credentialMatcher = new CredentialsMatcher
-    val realm = new Realm(cacheManager, credentialMatcher, db)
-    new SecurityService(new DefaultSecurityManager(realm))
-  }
-}
-
 class SecurityService(service: SecurityManager) extends SecurityContext {
 
   SecurityUtils.setSecurityManager(service)
@@ -44,4 +35,11 @@ class SecurityService(service: SecurityManager) extends SecurityContext {
   def isLoggedIn: Boolean = SecurityUtils.getSubject.isAuthenticated
 
 }
+
+class ConfiguredSecurityService(config: HOCONConfiguration, db: DataSource) extends SecurityService({
+  val cacheManager = new CacheProvider
+  val credentialMatcher = new CredentialsMatcher
+  val realm = new Realm(cacheManager, credentialMatcher, db)
+  new DefaultSecurityManager(realm)
+})
 

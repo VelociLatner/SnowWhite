@@ -5,6 +5,6 @@ import org.apache.shiro.authc.{AuthenticationInfo, AuthenticationToken}
 
 class CredentialsMatcher extends ShiroMatcher {
   def doCredentialsMatch(token: AuthenticationToken, info: AuthenticationInfo): Boolean = {
-
+    ???
   }
 }

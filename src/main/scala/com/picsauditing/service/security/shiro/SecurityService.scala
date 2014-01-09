@@ -4,7 +4,7 @@ import com.picsauditing.service.security.API.{Configuration, Subject, SecurityCo
 import com.picsauditing.service.security.exception.LoginException
 import org.apache.shiro.cache.CacheManager
 
-class SecurityService(cacheProvider: CacheManager, config: Configuration) extends SecurityContext {
+class SecurityService(cacheProvider: CacheManager, config: HOCONConfiguration) extends SecurityContext {
 
 
   def logout() = ???

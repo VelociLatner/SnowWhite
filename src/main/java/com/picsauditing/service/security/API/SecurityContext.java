@@ -8,7 +8,11 @@ public interface SecurityContext {
 
     void login(String username, String password) throws LoginException;
 
+    boolean isLoggedIn();
+
     void logout();
+
+    void touchSession();
 
     Object getSessionVariable(String key);
 

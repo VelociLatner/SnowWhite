@@ -1,13 +1,14 @@
 package com.picsauditing.service.security.shiro
 
-import com.picsauditing.service.security.API.{Subject, SecurityContext}
+import com.picsauditing.service.security.API.SecurityContext
 import com.picsauditing.service.security.exception.LoginException
-import org.apache.shiro.{authc, SecurityUtils}
+import org.apache.shiro.SecurityUtils
 import org.apache.shiro.mgt.{DefaultSecurityManager, SecurityManager}
 import org.apache.shiro.authc.UsernamePasswordToken
 import com.picsauditing.service.security.shiro.configuration.HOCONConfiguration
 import javax.sql.DataSource
 import com.picsauditing.service.security.hazelcast.CacheProvider
+import com.picsauditing.service.security.shiro.implementation.{Realm, CredentialsMatcher}
 
 object SecurityService {
   def apply(config: HOCONConfiguration, db: DataSource) = {
@@ -37,5 +38,10 @@ class SecurityService(service: SecurityManager) extends SecurityContext {
   } catch {
     case e: Throwable => throw new LoginException(e)
   }
+
+  def touchSession() = SecurityUtils.getSubject.getSession.touch()
+
+  def isLoggedIn: Boolean = SecurityUtils.getSubject.isAuthenticated
+
 }
 

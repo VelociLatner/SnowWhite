@@ -1,6 +1,7 @@
 package com.picsauditing.service.security.hazelcast;
 
 import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
@@ -12,8 +13,8 @@ public class HazelCastCache<K, V> implements Cache<K, V> {
 
     final private IMap<K, V> map;
 
-    public HazelCastCache(String name) {
-        map = Hazelcast.newHazelcastInstance().getMap(name);
+    public HazelCastCache(IMap map) {
+        this.map = map;
     }
 
     public V get(K key) throws CacheException { return map.get(key); }
